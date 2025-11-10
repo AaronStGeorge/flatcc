@@ -16,5 +16,5 @@ target_link_libraries(flatcc_cli
 set_target_properties(flatcc_cli PROPERTIES OUTPUT_NAME flatcc)
 
 if (FLATCC_INSTALL)
-    install(TARGETS flatcc_cli DESTINATION bin)
+    install(TARGETS flatcc_cli EXPORT flatccTargets DESTINATION bin)
 endif()

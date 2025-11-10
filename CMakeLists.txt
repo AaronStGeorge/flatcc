@@ -368,6 +368,14 @@ else()
     add_subdirectory(src/cli)
 endif()
 
+# Add aliases with flatcc:: namespace for consistent usage
+# whether using add_subdirectory() or find_package()
+add_library(flatcc::flatccrt ALIAS flatccrt)
+if (NOT FLATCC_RTONLY)
+    add_library(flatcc::flatcc ALIAS flatcc)
+    add_executable(flatcc::flatcc_cli ALIAS flatcc_cli)
+endif()
+
 # disabled by FLATCC_RTONLY
 if (FLATCC_TEST)
     add_subdirectory(test)
@@ -389,5 +397,22 @@ set_target_properties(${dist_targets}
 
 if (FLATCC_INSTALL)
     install(DIRECTORY include/flatcc DESTINATION include)
+
+    # Add CMake package support for find_package()
+    # Export the targets with proper namespace
+    install(EXPORT flatccTargets
+        FILE flatccTargets.cmake
+        NAMESPACE flatcc::
+        DESTINATION ${lib_dir}/cmake/flatcc
+    )
+
+    # Create minimal config file
+    file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/flatccConfig.cmake"
+        "include(\"\${CMAKE_CURRENT_LIST_DIR}/flatccTargets.cmake\")\n"
+    )
+
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/flatccConfig.cmake"
+        DESTINATION ${lib_dir}/cmake/flatcc
+    )
 endif()
 

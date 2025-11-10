@@ -8,8 +8,9 @@ add_library(flatccrt
 )
 
 target_include_directories(flatccrt PUBLIC
-    "${PROJECT_SOURCE_DIR}/include")
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
 if (FLATCC_INSTALL)
-    install(TARGETS flatccrt DESTINATION ${lib_dir})
+    install(TARGETS flatccrt EXPORT flatccTargets DESTINATION ${lib_dir})
 endif()

@@ -41,5 +41,5 @@ endif(FLATCC_REFLECTION)
 add_library(flatcc ${SOURCES})
 
 if (FLATCC_INSTALL)
-    install(TARGETS flatcc DESTINATION ${lib_dir})
+    install(TARGETS flatcc EXPORT flatccTargets DESTINATION ${lib_dir})
 endif()
